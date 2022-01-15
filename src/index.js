@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// coursera use BS v4 but npm give BS5 -> import cnd vào index
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
