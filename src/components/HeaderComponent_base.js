@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { NavLink } from 'react-router-dom';
+
 import {
   Container,
   Nav,
@@ -9,29 +9,9 @@ import {
   Collapse,
   NavItem,
 } from 'reactstrap';
-import { NAVIGATION_HEADER } from '../shared/navigationHeader';
+import { NavLink } from 'react-router-dom';
 
-const RenderHeaderNavItem = (props) => {
-  const nav = props.navList;
-  return nav.map((el) => (
-    <NavItem key={el.index}>
-      <NavLink className="nav-link" to={el.toPath}>
-        <span className={el.className}></span> {el.htmlContent}
-      </NavLink>
-    </NavItem>
-  ));
-};
-
-export default class Header extends Component {
-  // state = {
-  //   isNavOpen: false,
-  // };
-
-  // toggleNav = () => {
-  //   this.setState({
-  //     isNavOpen: !this.state.isNavOpen,
-  //   });
-  // };
+class Header extends Component {
   constructor(props) {
     super(props);
 
@@ -49,7 +29,7 @@ export default class Header extends Component {
 
   render() {
     return (
-      <Fragment>
+      <div>
         <Navbar dark expand="md">
           <div className="container">
             <NavbarToggler onClick={this.toggleNav} />
@@ -63,7 +43,7 @@ export default class Header extends Component {
             </NavbarBrand>
             <Collapse isOpen={this.state.isNavOpen} navbar>
               <Nav navbar>
-                {/*  <NavItem>
+                <NavItem>
                   <NavLink className="nav-link" to="/home">
                     <span className="fa fa-home fa-lg"></span> Home
                   </NavLink>
@@ -83,14 +63,13 @@ export default class Header extends Component {
                     <span className="fa fa-address-card fa-lg"></span> Contact
                     Us
                   </NavLink>
-                </NavItem> */}
-                <RenderHeaderNavItem navList={NAVIGATION_HEADER} />
+                </NavItem>
               </Nav>
             </Collapse>
           </div>
         </Navbar>
         <Container fluid className="rounded py-3 py-sm-5 jumbotron">
-          <Container>
+          <div className="container">
             <div className="row row-header">
               <div className="col-12 col-sm-6">
                 <h1>Ristorante con Fusion</h1>
@@ -101,9 +80,11 @@ export default class Header extends Component {
                 </p>
               </div>
             </div>
-          </Container>
+          </div>
         </Container>
-      </Fragment>
+      </div>
     );
   }
 }
+
+export default Header;
