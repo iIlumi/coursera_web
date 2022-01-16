@@ -3,6 +3,14 @@ import { Card, CardBody, CardImg, CardText, CardTitle } from 'reactstrap';
 // import dateFormat from 'dateformat';
 
 export default class DishDetail extends Component {
+  componentDidMount() {
+    console.log('DishDetail Component componentDidMount is invoked');
+  }
+
+  componentDidUpdate() {
+    console.log('DishDetail Component componentDidMUpdate is invoked');
+  }
+
   renderDish = (dish) =>
     (dish && (
       <Card className="border border-primary">
@@ -25,7 +33,7 @@ export default class DishDetail extends Component {
               <p>
                 {/* 
                 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
-                
+
                 Có thể dùng 
 
                 ${new Intl.DateTimeFormat('en-US', {
@@ -52,7 +60,9 @@ export default class DishDetail extends Component {
     )) || <div></div>;
 
   render() {
-    return (
+    console.log('Dish Detail render - pre-return');
+
+    return this.props.selectedDish ? (
       <div className="container">
         <div className="row">
           <div className="col-12 col-md-5 m-1">
@@ -63,6 +73,6 @@ export default class DishDetail extends Component {
           </div>
         </div>
       </div>
-    );
+    ) : null;
   }
 }
