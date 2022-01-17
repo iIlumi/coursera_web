@@ -23,4 +23,10 @@ export const NAVIGATION_HEADER = [
     className: 'fa fa-lg fa-address-card',
     htmlContent: 'Contact Us',
   },
+  {
+    index: 4,
+    toPath: '/contactme',
+    className: 'fa fa-lg fa-address-book',
+    htmlContent: 'Contact Me',
+  },
 ];

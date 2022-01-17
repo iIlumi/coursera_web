@@ -10,6 +10,7 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { connect } from 'react-redux';
+import ContactCourse from './ContactComponentCourse';
 // https://reactrouter.com/docs/en/v6/faq#what-happened-to-withrouter-i-need-it
 
 class Main extends Component {
@@ -88,7 +89,8 @@ class Main extends Component {
             // old router
           />
           <Route path="/menu/:dishId" element={<DishWithId />} />
-          <Route path="/contactus" element={<Contact />} />
+          <Route path="/contactus" element={<ContactCourse />} />
+          <Route path="/contactme" element={<Contact />} />
           <Route
             path="/aboutus"
             element={<About leaders={this.props.leaders} />}
