@@ -1,10 +1,7 @@
 // import { Component } from 'react';
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
-import { PROMOTIONS } from '../shared/promotions';
-import { LEADERS } from '../shared/leaders';
+
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -12,18 +9,20 @@ import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
+import { connect } from 'react-redux';
+// https://reactrouter.com/docs/en/v6/faq#what-happened-to-withrouter-i-need-it
 
-export default class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishes: DISHES,
-      comments: COMMENTS,
-      promotions: PROMOTIONS,
-      leaders: LEADERS,
-      // selectedDish: null,
-    };
-  }
+class Main extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     dishes: DISHES,
+  //     comments: COMMENTS,
+  //     promotions: PROMOTIONS,
+  //     leaders: LEADERS,
+  //     // selectedDish: null,
+  //   };
+  // }
 
   // onDishSelect = (dishId) => {
   //   console.log('click selected');
@@ -37,9 +36,9 @@ export default class Main extends Component {
     const HomePage = () => {
       return (
         <Home
-          dish={this.state.dishes.filter((dish) => dish.featured)[0]}
-          promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
-          leader={this.state.leaders.find((leader) => leader.featured)}
+          dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+          promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
+          leader={this.props.leaders.find((leader) => leader.featured)}
         />
       );
     };
@@ -51,11 +50,11 @@ export default class Main extends Component {
       return (
         <DishDetail
           selectedDish={
-            this.state.dishes.filter(
+            this.props.dishes.filter(
               (dish) => dish.id === parseInt(params.dishId, 10)
             )[0]
           }
-          comments={this.state.comments.filter(
+          comments={this.props.comments.filter(
             (comment) => comment.dishId === parseInt(params.dishId, 10)
           )}
         />
@@ -84,13 +83,16 @@ export default class Main extends Component {
           <Route path="/home" element={<HomePage />} />
           <Route
             path="/menu"
-            element={<Menu dishes={this.state.dishes} />}
+            element={<Menu dishes={this.props.dishes} />}
             // component={() => <Menu dishes={this.state.dishes} />}
             // old router
           />
           <Route path="/menu/:dishId" element={<DishWithId />} />
           <Route path="/contactus" element={<Contact />} />
-          <Route path="/aboutus" element={<About leaders={this.state.leaders}/>} />
+          <Route
+            path="/aboutus"
+            element={<About leaders={this.props.leaders} />}
+          />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
         <Footer />
@@ -101,3 +103,30 @@ export default class Main extends Component {
     // https://reactrouter.com/docs/en/v6/upgrading/v5#remove-redirects-inside-switch
   }
 }
+
+const mapStateToProps = (state) => {
+  // Vì state ở vd này đơn giản nên chứa chính các obj này luôn
+  // const { dishes, comments, promotions, leaders } = state
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  };
+};
+
+// const mapDispatchToProps = (dispatch) => {
+
+//   return {
+//     __callBack : (payload) => {
+//       dispatch({
+//         type:'__DISPATCH_TYPE' ,
+//         payload
+//       })
+//     }
+//   }
+// }
+
+export default connect(mapStateToProps, null)(Main);
+// export default withRouter(connect(mapStateToProps)(Main));
+// useParams -> khỏi xài withRouter
