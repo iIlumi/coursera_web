@@ -21,8 +21,16 @@ const handleSubmit = (values) => {
 
 const required = (value) => (value ? undefined : 'Required');
 const mustBeNumber = (value) => (isNaN(value) ? 'Must be a number' : undefined);
-const minValue = (min) => (value) =>
-  isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
+const minLength = (min) => (value) =>
+  !value || value.length >= min ? undefined : `Should be more than ${min} char`;
+const maxLength = (max) => (value) =>
+  value && value.length <= max ? undefined : `Should be less than ${max} char`;
+const validEmail = (val) =>
+  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)
+    ? undefined
+    : 'Invalid Email Address';
+// ===========================================================
+// Combine validator
 const composeValidators =
   (...validators) =>
   (value) =>
@@ -39,7 +47,10 @@ export const FinalReactFormDemo = () => {
       initialValues={formData}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit}>
-          <Field name="firstName">
+          <Field
+            name="firstName"
+            validate={composeValidators(required, minLength(3), maxLength(15))}
+          >
             {({ input, meta }) => {
               console.log('meta:', meta);
               console.log('input:', input);
@@ -51,12 +62,18 @@ export const FinalReactFormDemo = () => {
                   </Label>
                   <Col md={10}>
                     <Input {...input} type="text" placeholder="First Name" />
+                    {meta.error && meta.touched && (
+                      <span className="text-danger">{meta.error}</span>
+                    )}
                   </Col>
                 </Row>
               );
             }}
           </Field>
-          <Field name="lastName">
+          <Field
+            name="lastName"
+            validate={composeValidators(required, minLength(3), maxLength(15))}
+          >
             {({ input, meta }) => (
               <Row className="form-group">
                 <Label htmlFor="lastname" md={2}>
@@ -64,11 +81,22 @@ export const FinalReactFormDemo = () => {
                 </Label>
                 <Col md={10}>
                   <Input {...input} type="text" placeholder="Last Name" />
+                  {meta.error && meta.touched && (
+                    <span className="text-danger">{meta.error}</span>
+                  )}
                 </Col>
               </Row>
             )}
           </Field>
-          <Field name="telnum">
+          <Field
+            name="telnum"
+            validate={composeValidators(
+              required,
+              minLength(3),
+              maxLength(15),
+              mustBeNumber
+            )}
+          >
             {({ input, meta }) => (
               <Row className="form-group">
                 <Label htmlFor="telnum" md={2}>
@@ -76,11 +104,17 @@ export const FinalReactFormDemo = () => {
                 </Label>
                 <Col md={10}>
                   <Input {...input} type="tel" placeholder="Tel. Number" />
+                  {meta.error && meta.touched && (
+                    <span className="text-danger">{meta.error}</span>
+                  )}
                 </Col>
               </Row>
             )}
           </Field>
-          <Field name="email">
+          <Field
+            name="email"
+            validate={composeValidators(required, validEmail)}
+          >
             {({ input, meta }) => (
               <Row className="form-group">
                 <Label htmlFor="email" md={2}>
@@ -88,6 +122,9 @@ export const FinalReactFormDemo = () => {
                 </Label>
                 <Col md={10}>
                   <Input {...input} type="tel" placeholder="Email" />
+                  {meta.error && meta.touched && (
+                    <span className="text-danger">{meta.error}</span>
+                  )}
                 </Col>
               </Row>
             )}
@@ -123,11 +160,7 @@ export const FinalReactFormDemo = () => {
                   Your Feedback
                 </Label>
                 <Col md={10}>
-                  <Input
-                    {...input}
-                    type="textarea"
-                    rows="12"
-                  />
+                  <Input {...input} type="textarea" rows="12" />
                 </Col>
               </Row>
             )}
