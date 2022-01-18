@@ -12,7 +12,7 @@ import About from './AboutComponent';
 import { connect } from 'react-redux';
 import ContactCourse from './ContactComponentCourse';
 // https://reactrouter.com/docs/en/v6/faq#what-happened-to-withrouter-i-need-it
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
 
 class Main extends Component {
   // constructor(props) {
@@ -31,14 +31,21 @@ class Main extends Component {
   //   this.setState({ selectedDish: dishId });
   // };
 
+  componentDidMount() {
+    this.props.fetchDishes();
+  }
+
   render() {
     // Chỉ có 1 feature được chọn để show, find 1st hoặc filter chọn result[0]
     // Đặt thếm homepage trung gian để viết gọn lại trong routes, xử lý truyền props gọn trước
 
     const HomePage = () => {
+      // fetch trả về obj dishes lại bao gồm dishes bên trong
       return (
         <Home
-          dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+          dish={this.props.dishesFetch.dishes.filter((dish) => dish.featured)[0]}
+          dishesLoading={this.props.dishesFetch.isLoading}
+          dishesErrMess={this.props.dishesFetch.errMess}
           promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
           leader={this.props.leaders.find((leader) => leader.featured)}
         />
@@ -52,10 +59,12 @@ class Main extends Component {
       return (
         <DishDetail
           selectedDish={
-            this.props.dishes.filter(
+            this.props.dishesFetch.dishes.filter(
               (dish) => dish.id === parseInt(params.dishId, 10)
             )[0]
           }
+          isLoading={this.props.dishesFetch.isLoading}
+          errMess={this.props.dishesFetch.errMess}
           comments={this.props.comments.filter(
             (comment) => comment.dishId === parseInt(params.dishId, 10)
           )}
@@ -86,7 +95,7 @@ class Main extends Component {
           <Route path="/home" element={<HomePage />} />
           <Route
             path="/menu"
-            element={<Menu dishes={this.props.dishes} />}
+            element={<Menu dishesFetch={this.props.dishesFetch} />}
             // component={() => <Menu dishes={this.state.dishes} />}
             // old router
           />
@@ -112,7 +121,7 @@ const mapStateToProps = (state) => {
   // Vì state ở vd này đơn giản nên chứa chính các obj này luôn
   // const { dishes, comments, promotions, leaders } = state
   return {
-    dishes: state.dishes,
+    dishesFetch: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
     leaders: state.leaders,
@@ -122,6 +131,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) => {
     dispatch(addComment(dishId, rating, author, comment));
+  },
+  fetchDishes: () => {
+    dispatch(fetchDishes());
   },
 });
 

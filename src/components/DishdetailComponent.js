@@ -19,6 +19,7 @@ import {
 import { Form, Field } from 'react-final-form';
 // import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 
 const renderDish = (dish) =>
   (dish && (
@@ -105,6 +106,29 @@ export default function DishdetailComponent(props) {
     selectedDish: { id: dishId },
   } = props;
 
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+
+  if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  }
+
+  if (!props.selectedDish) {
+    return <div> No dish selected ... </div>;
+  }
   // console.log('dishId:', dishId)
   return (
     <div className="container">

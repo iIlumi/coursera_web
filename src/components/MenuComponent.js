@@ -8,6 +8,7 @@ import {
   BreadcrumbItem,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 
 // Tách riêng ra 1 function con nữa
 function RenderMenuItem({ dish }) {
@@ -26,13 +27,36 @@ function RenderMenuItem({ dish }) {
 // function con bóc thành rfc con đi kèm
 
 export default function Menu(props) {
-  const menu = props.dishes.map((dish) => {
+  const menu = props.dishesFetch.dishes.map((dish) => {
     return (
       <div className="col-12 col-md-5 m-1" key={dish.id}>
         <RenderMenuItem dish={dish} />
       </div>
     );
   });
+
+  if (props.dishesFetch.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+
+  if (props.dishesFetch.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <h4>{props.dishesFetch.errMess}</h4>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="row">
