@@ -66,9 +66,12 @@ const RenderComments = ({ comments }) =>
   )) || <div></div>;
 
 // Form submit
-const handleSubmit = (values) => {
+const handleSubmit = (values, dishId, addComment) => {
+  // console.log('dishId:', dishId);
+  // console.log('values:', values);
   console.log('Current State is: ' + JSON.stringify(values));
-  alert('Current State is: ' + JSON.stringify(values));
+  addComment(dishId, values.rating, values.author, values.comment);
+  // alert('Current State is: ' + JSON.stringify(values));
   //   ev.preventDefault();
 };
 
@@ -91,13 +94,18 @@ const composeValidators =
 export default function DishdetailComponent(props) {
   // BS modal in React
   let [showModal, setShowModal] = useState(false);
-  console.log('showModal:', showModal);
   const handleCloseModal = () => setShowModal(false);
   const handleOpenModal = () => setShowModal(true);
-  
+
   // Phải khai báo default chứ ko dùng html selected vô input được
   let formData = { rating: 1 };
+  // Bóc ra trước để an toàn vì component của BS có thể gây hiểu nhầm về props
+  const {
+    addComment,
+    selectedDish: { id: dishId },
+  } = props;
 
+  // console.log('dishId:', dishId)
   return (
     <div className="container">
       <div className="row">
@@ -128,7 +136,7 @@ export default function DishdetailComponent(props) {
         <ModalHeader toggle={handleCloseModal}>Submit comment</ModalHeader>
         <ModalBody>
           <Form
-            onSubmit={handleSubmit}
+            onSubmit={(values) => handleSubmit(values, dishId, addComment)}
             initialValues={formData}
             render={({ handleSubmit, form, submitting, pristine, values }) => (
               <form onSubmit={handleSubmit}>
@@ -178,10 +186,10 @@ export default function DishdetailComponent(props) {
                     );
                   }}
                 </Field>
-                <Field name="message">
+                <Field name="comment">
                   {({ input }) => (
                     <Row className="form-group">
-                      <Label htmlFor="message" md={12}>
+                      <Label htmlFor="comment" md={12}>
                         Your Feedback
                       </Label>
                       <Col md={12}>

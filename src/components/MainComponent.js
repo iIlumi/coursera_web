@@ -12,6 +12,7 @@ import About from './AboutComponent';
 import { connect } from 'react-redux';
 import ContactCourse from './ContactComponentCourse';
 // https://reactrouter.com/docs/en/v6/faq#what-happened-to-withrouter-i-need-it
+import { addComment } from '../redux/ActionCreators';
 
 class Main extends Component {
   // constructor(props) {
@@ -58,6 +59,7 @@ class Main extends Component {
           comments={this.props.comments.filter(
             (comment) => comment.dishId === parseInt(params.dishId, 10)
           )}
+          addComment={this.props.addComment}
         />
       );
     };
@@ -117,18 +119,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => ({
+  addComment: (dishId, rating, author, comment) => {
+    dispatch(addComment(dishId, rating, author, comment));
+  },
+});
 
-//   return {
-//     __callBack : (payload) => {
-//       dispatch({
-//         type:'__DISPATCH_TYPE' ,
-//         payload
-//       })
-//     }
-//   }
-// }
-
-export default connect(mapStateToProps, null)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
 // export default withRouter(connect(mapStateToProps)(Main));
 // useParams -> khỏi xài withRouter
