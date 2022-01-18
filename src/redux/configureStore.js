@@ -7,8 +7,10 @@ import { LeadersReducer } from './LeadersReducer';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+
 // https://github.com/reduxjs/redux-thunk#manual-setup
 // https://github.com/LogRocket/redux-logger#usage
+
 export const ConfigureStore = () => {
   const store = createStore(
     combineReducers({

@@ -12,9 +12,9 @@ import { Link } from 'react-router-dom';
 function About(props) {
   const leaders = props.leaders.map((leader) => {
     return (
-      <div className="row">
+      <div className="row" key={leader.id}>
         <div className="col-2">
-          <img src={leader.image} className='img-fluid'/>
+          <img src={leader.image} className="img-fluid" />
         </div>
         <div className="col-10">
           <p>Leader {leader.name}</p>

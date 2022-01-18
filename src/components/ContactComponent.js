@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Col,
-  FormFeedback,
+  BreadcrumbItem
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { FinalReactFormDemo } from './FormComponent';
 
 export default class Contact extends Component {
@@ -22,10 +15,10 @@ export default class Contact extends Component {
             <BreadcrumbItem>
               <Link to="/home">Home</Link>
             </BreadcrumbItem>
-            <BreadcrumbItem active>Contact Us</BreadcrumbItem>
+            <BreadcrumbItem active>Contact Me</BreadcrumbItem>
           </Breadcrumb>
           <div className="col-12">
-            <h3>Contact Us</h3>
+            <h3>Contact Me</h3>
             <hr />
           </div>
         </div>

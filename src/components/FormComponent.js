@@ -22,7 +22,7 @@ const handleSubmit = (values) => {
 const required = (value) => (value ? undefined : 'Required');
 const mustBeNumber = (value) => (isNaN(value) ? 'Must be a number' : undefined);
 const minLength = (min) => (value) =>
-!value || value.length >= min ? undefined : `Should be more than ${min} char`;
+  !value || value.length >= min ? undefined : `Should be more than ${min} char`;
 const maxLength = (max) => (value) =>
   value && value.length <= max ? undefined : `Should be less than ${max} char`;
 const validEmail = (val) =>
@@ -130,12 +130,12 @@ export const FinalReactFormDemo = () => {
             )}
           </Field>
           <Row className="form-group">
-            <Field name="agree">
+            <Field name="agree" type="checkbox">
               {({ input, meta }) => (
                 <Col md={{ size: 6, offset: 2 }}>
                   <div className="form-check">
                     <Label check>
-                      <Input type="checkbox" {...input} />
+                      <Input {...input} />
                       <strong>May we contact you?</strong>
                     </Label>
                   </div>

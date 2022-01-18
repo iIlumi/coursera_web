@@ -11,6 +11,7 @@ export const addComment = (dishId, rating, author, comment) => ({
   },
 });
 
+// Fake api logic call w setTimeout
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishesLoading(true));
 
