@@ -22,7 +22,7 @@ const handleSubmit = (values) => {
 const required = (value) => (value ? undefined : 'Required');
 const mustBeNumber = (value) => (isNaN(value) ? 'Must be a number' : undefined);
 const minLength = (min) => (value) =>
-  !value || value.length >= min ? undefined : `Should be more than ${min} char`;
+!value || value.length >= min ? undefined : `Should be more than ${min} char`;
 const maxLength = (max) => (value) =>
   value && value.length <= max ? undefined : `Should be less than ${max} char`;
 const validEmail = (val) =>
