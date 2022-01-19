@@ -12,7 +12,12 @@ import About from './AboutComponent';
 import { connect } from 'react-redux';
 import ContactCourse from './ContactComponentCourse';
 // https://reactrouter.com/docs/en/v6/faq#what-happened-to-withrouter-i-need-it
-import { addComment, fetchDishes } from '../redux/ActionCreators';
+import {
+  addComment,
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+} from '../redux/ActionCreators';
 
 class Main extends Component {
   // constructor(props) {
@@ -33,6 +38,8 @@ class Main extends Component {
 
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
   }
 
   render() {
@@ -43,10 +50,18 @@ class Main extends Component {
       // fetch trả về obj dishes lại bao gồm dishes bên trong
       return (
         <Home
-          dish={this.props.dishesFetch.dishes.filter((dish) => dish.featured)[0]}
+          dish={
+            this.props.dishesFetch.dishes.filter((dish) => dish.featured)[0]
+          }
           dishesLoading={this.props.dishesFetch.isLoading}
           dishesErrMess={this.props.dishesFetch.errMess}
-          promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
+          promotion={
+            this.props.promotionsFetch.promotions.filter(
+              (promo) => promo.featured
+            )[0]
+          }
+          promoLoading={this.props.promotionsFetch.isLoading}
+          promoErrMess={this.props.promotionsFetch.errMess}
           leader={this.props.leaders.find((leader) => leader.featured)}
         />
       );
@@ -56,6 +71,9 @@ class Main extends Component {
     const DishWithId = () => {
       const params = useParams();
       // console.log('params:', params);
+      // Có thể thấy comments và dish đang xài chung isLoading với nhau
+      // Thực tế có thể sẽ ko trả về cùng lúc như vậy ?
+      // Có thể dùng|| ở đây để gom hết loading và err, gọn code ko
       return (
         <DishDetail
           selectedDish={
@@ -65,9 +83,10 @@ class Main extends Component {
           }
           isLoading={this.props.dishesFetch.isLoading}
           errMess={this.props.dishesFetch.errMess}
-          comments={this.props.comments.filter(
+          comments={this.props.commentsFetch.comments.filter(
             (comment) => comment.dishId === parseInt(params.dishId, 10)
           )}
+          commentsErrMess={this.props.commentsFetch.errMess}
           addComment={this.props.addComment}
         />
       );
@@ -120,10 +139,11 @@ class Main extends Component {
 const mapStateToProps = (state) => {
   // Vì state ở vd này đơn giản nên chứa chính các obj này luôn
   // const { dishes, comments, promotions, leaders } = state
+  // Đạt trùng tên vẫn được nhưng khi đó sẽ là this.state.dishes.dishes.map(...)
   return {
     dishesFetch: state.dishes,
-    comments: state.comments,
-    promotions: state.promotions,
+    commentsFetch: state.comments,
+    promotionsFetch: state.promotions,
     leaders: state.leaders,
   };
 };
@@ -135,6 +155,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchDishes: () => {
     dispatch(fetchDishes());
   },
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
