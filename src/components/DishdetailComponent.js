@@ -20,11 +20,12 @@ import { Form, Field } from 'react-final-form';
 // import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 const renderDish = (dish) =>
   (dish && (
     <Card className="border border-primary">
-      <CardImg top src={dish.image} alt={dish.name} />
+      <CardImg top src={baseUrl + dish.image} alt={dish.name} />
       <CardBody>
         <CardTitle>{dish.name}</CardTitle>
         <CardText>{dish.description}</CardText>
@@ -101,10 +102,6 @@ export default function DishdetailComponent(props) {
   // Phải khai báo default chứ ko dùng html selected vô input được
   let formData = { rating: 1 };
   // Bóc ra trước để an toàn vì component của BS có thể gây hiểu nhầm về props
-  const {
-    addComment,
-    selectedDish: { id: dishId },
-  } = props;
 
   if (props.isLoading) {
     return (
@@ -129,6 +126,13 @@ export default function DishdetailComponent(props) {
   if (!props.selectedDish) {
     return <div> No dish selected ... </div>;
   }
+
+  // Bắt buộc phải dời xuống vì destruct chỉ được khi đã load xong data
+  const {
+    addComment,
+    selectedDish: { id: dishId },
+  } = props;
+
   // console.log('dishId:', dishId)
   return (
     <div className="container">

@@ -77,7 +77,14 @@ export default class Header extends Component {
     );
     event.preventDefault();
   }
-  
+
+  // TODO - header logo
+  // Lẽ ra header cũng phải lấy asset từ db nhưng ko cần
+  // Load tĩnh về luôn vì sẽ lưu lại
+  // Tuy nhiên lần đầu load đang bị vấn đề truy cập asset quá chậm
+  // -> ko lên hình kịp và bị lưu state hình lỗi
+  // -> phải refresh mới hiện lại
+
   render() {
     return (
       <Fragment>
