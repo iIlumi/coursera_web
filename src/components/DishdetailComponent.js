@@ -21,28 +21,38 @@ import { Form, Field } from 'react-final-form';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const renderDish = (dish) =>
   (dish && (
-    <Card className="border border-primary">
-      <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-      <CardBody>
-        <CardTitle>{dish.name}</CardTitle>
-        <CardText>{dish.description}</CardText>
-      </CardBody>
-    </Card>
+    <FadeTransform
+      in
+      transformProps={{
+        exitTransform: 'scale(0.5) translateY(-50%)',
+      }}
+    >
+      <Card className="border border-primary">
+        <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+        <CardBody>
+          <CardTitle>{dish.name}</CardTitle>
+          <CardText>{dish.description}</CardText>
+        </CardBody>
+      </Card>
+    </FadeTransform>
   )) || <div></div>;
 
 const RenderComments = ({ comments }) =>
   (comments && (
     <div>
       <h4>Comments</h4>
-      {comments.map((el, idx) => {
-        return (
-          <Fragment key={idx}>
-            <p>{el.comment}</p>
-            <p>
-              {/* 
+      <Stagger in>
+        {comments.map((el, idx) => {
+          return (
+            <Fade in key={idx}>
+              {/* <Fragment> */}
+                <p>{el.comment}</p>
+                <p>
+                  {/* 
             https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
 
             Có thể dùng 
@@ -53,17 +63,19 @@ const RenderComments = ({ comments }) =>
               day: '2-digit',
             }).format(new Date(Date.parse(comment.date)))}
             */}
-              {`
+                  {`
             -- ${el.author} , ${new Date(el.date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              })}
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
             `}
-            </p>
-          </Fragment>
-        );
-      })}
+                </p>
+              {/* </Fragment> */}
+            </Fade>
+          );
+        })}
+      </Stagger>
     </div>
   )) || <div></div>;
 

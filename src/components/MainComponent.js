@@ -106,6 +106,24 @@ class Main extends Component {
     // Chỗ này hack_fix chứ khá loạn xạ
     // Nên viết thẳng rfc từ đầu luôn sẽ đỡ hơn
     
+    // https://github.com/remix-run/react-router/issues/8146#issuecomment-947860640
+    // Có thể thử cách tiếp cận HOC nhưng thấy cụng kiểu hack-fix, đỡ refactor hơn
+    // Bản thân proj này cấu trúc đã ko tốt sẵn -> chỉ có thể hack fix
+    // Hướng tiếp cận rcc vs rfc cũng ko tối ưu
+    // function withParams(Component) {
+    //   return props => <Component {...props} params={useParams()} />;
+    // }
+    
+    // // in BlogPost.js
+    // class BlogPost extends React.Component {
+    //   render() {
+    //     let { id } = this.props.params;
+    //     // ...
+    //   }
+    // }
+    
+    // export default withParams(BlogPost);
+    
     const TransitionMain = () => {
       let { key } = useLocation();
       return (
