@@ -5,7 +5,13 @@ import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Navigate,
+  useParams,
+  useLocation,
+} from 'react-router-dom';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
@@ -18,6 +24,7 @@ import {
   fetchComments,
   fetchPromos,
 } from '../redux/ActionCreators';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 class Main extends Component {
   // constructor(props) {
@@ -92,6 +99,40 @@ class Main extends Component {
       );
     };
 
+    // Ko dùng vậy được vì hàm render ko được gọi lại theo kiểu router khi chuyển trang
+    // let keyAnim = Date.now()
+    // console.log('keyAnim:', keyAnim)
+
+    // Chỗ này hack_fix chứ khá loạn xạ
+    // Nên viết thẳng rfc từ đầu luôn sẽ đỡ hơn
+    
+    const TransitionMain = () => {
+      let { key } = useLocation();
+      return (
+        <TransitionGroup>
+          <CSSTransition key={key} classNames="page" timeout={300}>
+            <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route
+                path="/menu"
+                element={<Menu dishesFetch={this.props.dishesFetch} />}
+                // component={() => <Menu dishes={this.state.dishes} />}
+                // old router
+              />
+              <Route path="/menu/:dishId" element={<DishWithId />} />
+              <Route path="/contactus" element={<ContactCourse />} />
+              <Route path="/contactme" element={<Contact />} />
+              <Route
+                path="/aboutus"
+                element={<About leaders={this.props.leaders} />}
+              />
+              <Route path="*" element={<Navigate to="/home" />} />
+            </Routes>
+          </CSSTransition>
+        </TransitionGroup>
+      );
+    };
+
     return (
       <div>
         <Header />
@@ -109,24 +150,7 @@ class Main extends Component {
             (el) => el.id === this.state.selectedDish
           )}
         /> */}
-
-        <Routes>
-          <Route path="/home" element={<HomePage />} />
-          <Route
-            path="/menu"
-            element={<Menu dishesFetch={this.props.dishesFetch} />}
-            // component={() => <Menu dishes={this.state.dishes} />}
-            // old router
-          />
-          <Route path="/menu/:dishId" element={<DishWithId />} />
-          <Route path="/contactus" element={<ContactCourse />} />
-          <Route path="/contactme" element={<Contact />} />
-          <Route
-            path="/aboutus"
-            element={<About leaders={this.props.leaders} />}
-          />
-          <Route path="*" element={<Navigate to="/home" />} />
-        </Routes>
+        <TransitionMain />
         <Footer />
       </div>
     );
