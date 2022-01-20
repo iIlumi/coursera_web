@@ -68,11 +68,11 @@ const RenderComments = ({ comments }) =>
   )) || <div></div>;
 
 // Form submit
-const handleSubmit = (values, dishId, addComment) => {
+const handleSubmit = (values, dishId, postComment) => {
   // console.log('dishId:', dishId);
   // console.log('values:', values);
   console.log('Current State is: ' + JSON.stringify(values));
-  addComment(dishId, values.rating, values.author, values.comment);
+  postComment(dishId, values.rating, values.author, values.comment);
   // alert('Current State is: ' + JSON.stringify(values));
   //   ev.preventDefault();
 };
@@ -129,7 +129,7 @@ export default function DishdetailComponent(props) {
 
   // Bắt buộc phải dời xuống vì destruct chỉ được khi đã load xong data
   const {
-    addComment,
+    postComment,
     selectedDish: { id: dishId },
   } = props;
 
@@ -164,7 +164,7 @@ export default function DishdetailComponent(props) {
         <ModalHeader toggle={handleCloseModal}>Submit comment</ModalHeader>
         <ModalBody>
           <Form
-            onSubmit={(values) => handleSubmit(values, dishId, addComment)}
+            onSubmit={(values) => handleSubmit(values, dishId, postComment)}
             initialValues={formData}
             render={({ handleSubmit, form, submitting, pristine, values }) => (
               <form onSubmit={handleSubmit}>

@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import ContactCourse from './ContactComponentCourse';
 // https://reactrouter.com/docs/en/v6/faq#what-happened-to-withrouter-i-need-it
 import {
-  addComment,
+  postComment,
   fetchDishes,
   fetchComments,
   fetchPromos,
@@ -87,7 +87,7 @@ class Main extends Component {
             (comment) => comment.dishId === parseInt(params.dishId, 10)
           )}
           commentsErrMess={this.props.commentsFetch.errMess}
-          addComment={this.props.addComment}
+          postComment={this.props.postComment}
         />
       );
     };
@@ -149,8 +149,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) => {
-    dispatch(addComment(dishId, rating, author, comment));
+  postComment: (dishId, rating, author, comment) => {
+    dispatch(postComment(dishId, rating, author, comment));
   },
   fetchDishes: () => {
     dispatch(fetchDishes());
